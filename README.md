@@ -50,7 +50,7 @@ pnpm add -g mcp-odos
 1.  **Clone the repository:**
 
     ```bash
-    git clone <repository_url>
+    git clone https://github.com/IQAIcom/mcp-odos.git
     cd mcp-odos
     ```
 
