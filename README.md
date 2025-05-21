@@ -2,6 +2,10 @@
 
 This project implements a Model Context Protocol (MCP) server to interact with decentralized exchanges (DEXs). It allows MCP-compatible clients (like AI assistants, IDE extensions, or custom applications) to access functionalities such as getting quotes for swaps and executing swaps.
 
+<a href="https://glama.ai/mcp/servers/@IQAIcom/mcp-odos">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@IQAIcom/mcp-odos/badge" alt="MCP-ODOS MCP server" />
+</a>
+
 This server is built using TypeScript and `fastmcp`.
 
 ## Features (MCP Tools)
