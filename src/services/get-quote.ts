@@ -1,6 +1,6 @@
 import dedent from "dedent";
 import { formatUnits } from "viem";
-import type { WalletService } from "./wallet";
+import type { WalletService } from "./wallet.js";
 
 export interface QuoteResponse {
   inTokens: string[];

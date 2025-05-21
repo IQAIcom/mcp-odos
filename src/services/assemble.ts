@@ -1,4 +1,4 @@
-import type { WalletService } from "./wallet";
+import type { WalletService } from "./wallet.js";
 
 export interface AssembleResponseTxn {
 	chainId: number; // Chain ID for path execution

@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { AssembleService } from "../services/assemble";
-import { ExecuteSwapService } from "../services/execute-swap";
-import { GetQuoteActionService } from "../services/get-quote";
-import { WalletService } from "../services/wallet";
+import { AssembleService } from "../services/assemble.js";
+import { ExecuteSwapService } from "../services/execute-swap.js";
+import { GetQuoteActionService } from "../services/get-quote.js";
+import { WalletService } from "../services/wallet.js";
 import type { Chain } from "viem";
 
 const swapSchema = z.object({

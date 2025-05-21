@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { GetQuoteActionService } from "../services/get-quote";
-import { WalletService } from "../services/wallet";
+import { GetQuoteActionService } from "../services/get-quote.js";
+import { WalletService } from "../services/wallet.js";
 import type { Address, Chain } from "viem";
 
 const getQuoteParamsSchema = z.object({
