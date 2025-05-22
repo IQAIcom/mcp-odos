@@ -2,7 +2,7 @@
 import { CHAIN_IDS } from "../lib/constants.js";
 
 const chainIdProvider = {
-	get: async (_) => {
+	get: async () => {
 		const chains = Object.entries(CHAIN_IDS)
 			.map(([chainName, chainId]) => `${chainName}: ${chainId}`)
 			.join("\n");

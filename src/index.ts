@@ -1,6 +1,7 @@
 import { FastMCP } from "fastmcp";
 import { getQuoteTool } from "./tools/getQuoteTool.js";
 import { swapTool } from "./tools/swapTool.js";
+import { chainIdTool } from "./tools/chainidTool.js";
 
 async function main() {
 	console.log("Initializing MCP Odos Server...");
@@ -12,6 +13,7 @@ async function main() {
 	
   server.addTool(getQuoteTool);
   server.addTool(swapTool);
+  server.addTool(chainIdTool);
   
 	try {
 		await server.start({
