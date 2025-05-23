@@ -41,7 +41,8 @@ export class AssembleService {
 					`HTTP error! status: ${response.status} - ${response.statusText}`,
 				);
 			}
-			const data = await response.json();
+			// const data = await response.json();
+			const data = (await response.json()) as { transaction: AssembleResponseTxn };
 			return data.transaction as AssembleResponseTxn;
 		} catch (error) {
 			console.error("Error assembling path:", error);

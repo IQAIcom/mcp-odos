@@ -1,4 +1,4 @@
-import { CHAIN_IDS } from "./constants";
+import { CHAIN_IDS } from "./constants.js";
 export const EXCHANGE_TEMPLATE = `Respond with a JSON object containing exchange information for odos swaps.
 Extract the exchange details from the most recent message. If required information is missing, respond with an error.
 
