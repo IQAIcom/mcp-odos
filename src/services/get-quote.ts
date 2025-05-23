@@ -20,13 +20,6 @@ export interface QuoteResponse {
   blockNumber: number;
 }
 
-export interface QuoteParams {
-  fromToken: string;
-  toToken: string;
-  chainId: number;
-  amount: string;
-}
-
 export class GetQuoteActionService {
   private readonly API_URL = "https://api.odos.xyz";
   private readonly walletService: WalletService;
@@ -35,10 +28,14 @@ export class GetQuoteActionService {
     this.walletService = walletService;
   }
 
-  async execute(params: QuoteParams) {
-    const { fromToken, toToken, chainId, amount } = params;
+  async execute(
+    fromToken: string,
+    toToken: string,
+    chainId: number,
+    amount: string,
+  ) {
     const userAddr = this.walletService.getWalletClient()?.account?.address;
-    
+
     if (!userAddr) {
       throw new Error("User address is not defined");
     }
@@ -72,13 +69,13 @@ export class GetQuoteActionService {
       });
 
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(`Failed to fetch quote: ${response.statusText}`);
       }
-      
+
       return data as QuoteResponse;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(`Failed to fetch quote: ${error.message}`);
     }
   }

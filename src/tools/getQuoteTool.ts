@@ -8,6 +8,13 @@ const getQuoteParamsSchema = z.object({
       .string()
       .optional()
       .describe("The blockchain network to execute the transaction on."),
+    fromToken: z.string().describe("The token to swap from."),
+    toToken: z.string().describe("The token to swap to."),
+    chainId: z.number().describe("The chain ID to execute the transaction on."),
+    amount: z
+		.string()
+		.regex(/^\d+(\.\d+)?$/, { message: "Amount must be a valid number." })
+		.describe("The amount of tokens to swap."),
 });
 
 export const getQuoteTool = {
@@ -33,7 +40,12 @@ export const getQuoteTool = {
                 args.chain ? (args.chain as unknown as Chain) : undefined
               );
 			const service = new GetQuoteActionService(walletService);
-			const quote = await service.execute();
+			const quote = await service.execute(
+                args.fromToken,
+                args.toToken,
+                args.chainId,
+                args.amount,
+            );
 			if (quote instanceof Error) {
 				return `Error fetching quote: ${quote.message}`;
 			}

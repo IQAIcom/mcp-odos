@@ -6,10 +6,17 @@ import { WalletService } from "../services/wallet.js";
 import type { Chain } from "viem";
 
 const swapSchema = z.object({
-  chain: z
-      .string()
-      .optional()
-      .describe("The blockchain network to execute the transaction on."),
+	chain: z
+		.string()
+		.optional()
+		.describe("The blockchain network to execute the transaction on."),
+		fromToken: z.string().describe("The token to swap from."),
+	toToken: z.string().describe("The token to swap to."),
+	chainId: z.number().describe("The chain ID to execute the transaction on."),
+	amount: z
+		.string()
+		.regex(/^\d+(\.\d+)?$/, { message: "Amount must be a valid number." })
+		.describe("The amount of tokens to swap."),
 });
 
 export const swapTool = {
@@ -34,7 +41,12 @@ export const swapTool = {
                 args.chain ? (args.chain as unknown as Chain) : undefined
               );
 			const getQuoteService = new GetQuoteActionService(walletService);
-			const quote = await getQuoteService.execute();
+			const quote = await getQuoteService.execute(
+				args.fromToken,
+                args.toToken,
+                args.chainId,
+                args.amount,
+			);
 
 			if (quote instanceof Error || !quote.pathId) {
 				return `Error fetching quote: ${quote instanceof Error ? quote.message : String(quote)}`;
