@@ -1,16 +1,16 @@
+import type { Chain } from "viem";
 import { z } from "zod";
 import { AssembleService } from "../services/assemble.js";
 import { ExecuteSwapService } from "../services/execute-swap.js";
 import { GetQuoteActionService } from "../services/get-quote.js";
 import { WalletService } from "../services/wallet.js";
-import type { Chain } from "viem";
 
 const swapSchema = z.object({
 	chain: z
 		.string()
 		.optional()
 		.describe("The blockchain network to execute the transaction on."),
-		fromToken: z.string().describe("The token to swap from."),
+	fromToken: z.string().describe("The token to swap from."),
 	toToken: z.string().describe("The token to swap to."),
 	chainId: z.number().describe("The chain ID to execute the transaction on."),
 	amount: z
@@ -20,32 +20,30 @@ const swapSchema = z.object({
 });
 
 export const swapTool = {
-    name: "ODOS_SWAP",
-    description: "Execute a swap transaction",
-    parameters: swapSchema,
-    execute: async (args: z.infer<typeof swapSchema>) => {
-        try {
-            const walletPrivateKey = process.env.WALLET_PRIVATE_KEY;
+	name: "ODOS_SWAP",
+	description: "Execute a swap transaction",
+	parameters: swapSchema,
+	execute: async (args: z.infer<typeof swapSchema>) => {
+		try {
+			const walletPrivateKey = process.env.WALLET_PRIVATE_KEY;
 			if (!walletPrivateKey) {
 				throw new Error(
 					"WALLET_PRIVATE_KEY is not set in the environment. This is required to execute trades.",
 				);
 			}
-	
-            console.log(
-                `[ODOS_SWAP] Called...`,
-                );
+
+			console.log("[ODOS_SWAP] Called...");
 			// const walletService = new WalletService(walletPrivateKey);
-            const walletService = new WalletService(
-                walletPrivateKey,
-                args.chain ? (args.chain as unknown as Chain) : undefined
-              );
+			const walletService = new WalletService(
+				walletPrivateKey,
+				args.chain ? (args.chain as unknown as Chain) : undefined,
+			);
 			const getQuoteService = new GetQuoteActionService(walletService);
 			const quote = await getQuoteService.execute(
 				args.fromToken,
-                args.toToken,
-                args.chainId,
-                args.amount,
+				args.toToken,
+				args.chainId,
+				args.amount,
 			);
 
 			if (quote instanceof Error || !quote.pathId) {
@@ -76,6 +74,5 @@ export const swapTool = {
 		} catch (error) {
 			return `Error in swap process: ${error instanceof Error ? error.message : String(error)}`;
 		}
-    }
-
-}
+	},
+};

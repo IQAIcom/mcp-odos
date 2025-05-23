@@ -1,4 +1,3 @@
-
 import { CHAIN_IDS } from "../lib/constants.js";
 
 const chainIdProvider = {

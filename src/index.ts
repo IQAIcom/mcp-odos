@@ -1,7 +1,7 @@
 import { FastMCP } from "fastmcp";
+import { chainIdTool } from "./tools/chainidTool.js";
 import { getQuoteTool } from "./tools/getQuoteTool.js";
 import { swapTool } from "./tools/swapTool.js";
-import { chainIdTool } from "./tools/chainidTool.js";
 
 async function main() {
 	console.log("Initializing MCP Odos Server...");
@@ -10,11 +10,11 @@ async function main() {
 		name: "IQAI Odos MCP Server",
 		version: "0.0.1",
 	});
-	
-  server.addTool(getQuoteTool);
-  server.addTool(swapTool);
-  server.addTool(chainIdTool);
-  
+
+	server.addTool(getQuoteTool);
+	server.addTool(swapTool);
+	server.addTool(chainIdTool);
+
 	try {
 		await server.start({
 			transportType: "stdio",

@@ -42,7 +42,9 @@ export class AssembleService {
 				);
 			}
 			// const data = await response.json();
-			const data = (await response.json()) as { transaction: AssembleResponseTxn };
+			const data = (await response.json()) as {
+				transaction: AssembleResponseTxn;
+			};
 			return data.transaction as AssembleResponseTxn;
 		} catch (error) {
 			console.error("Error assembling path:", error);
