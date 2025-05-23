@@ -22,7 +22,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.7.1
+          version: latest
           run_install: false
 
       - name: Get pnpm store directory
@@ -37,6 +37,9 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
+
+      - name: Remove pnpm-lock.yaml
+        run: rm -f pnpm-lock.yaml
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
