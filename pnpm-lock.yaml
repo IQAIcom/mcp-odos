@@ -8,12 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@biomejs/biome':
-        specifier: '*'
-        version: 1.9.4
-      '@types/node':
-        specifier: ^22.15.19
-        version: 22.15.19
       dedent:
         specifier: ^1.6.0
         version: 1.6.0
@@ -23,6 +17,9 @@ importers:
       fastmcp:
         specifier: ^1.27.7
         version: 1.27.7
+      shx:
+        specifier: ^0.3.4
+        version: 0.3.4
       viem:
         specifier: ^2.30.0
         version: 2.30.0(typescript@5.8.3)(zod@3.25.7)
@@ -30,21 +27,24 @@ importers:
         specifier: ^3.25.7
         version: 3.25.7
     devDependencies:
+      '@biomejs/biome':
+        specifier: '*'
+        version: 1.9.4
       '@changesets/cli':
         specifier: ^2.29.4
         version: 2.29.4
       '@types/express':
         specifier: ^5.0.2
         version: 5.0.2
+      '@types/node':
+        specifier: ^22.15.19
+        version: 22.15.19
       husky:
         specifier: ^9.1.7
         version: 9.1.7
       lint-staged:
         specifier: ^15.0.0
         version: 15.5.2
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
       ts-node-dev:
         specifier: ^2.0.0
         version: 2.0.0(@types/node@22.15.19)(typescript@5.8.3)
