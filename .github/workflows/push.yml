@@ -2,6 +2,9 @@ name: Push checks
 
 on: [push]
 
+permissions:
+  contents: read
+
 jobs:
   Checkout:
     runs-on: ubuntu-latest
