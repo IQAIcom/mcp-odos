@@ -1,6 +1,5 @@
 import dedent from "dedent";
 import { type Address, type Hash, erc20Abi } from "viem";
-import { getContract } from "viem";
 import type { AssembleResponseTxn } from "./assemble.js";
 import type { WalletService } from "./wallet.js";
 

@@ -41,7 +41,6 @@ export class AssembleService {
 					`HTTP error! status: ${response.status} - ${response.statusText}`,
 				);
 			}
-			// const data = await response.json();
 			const data = (await response.json()) as {
 				transaction: AssembleResponseTxn;
 			};
