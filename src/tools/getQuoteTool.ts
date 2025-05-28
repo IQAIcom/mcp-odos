@@ -2,6 +2,7 @@ import type { Chain } from "viem";
 import { z } from "zod";
 import { GetQuoteActionService } from "../services/get-quote.js";
 import { WalletService } from "../services/wallet.js";
+import { mainnet, fraxtal } from "viem/chains";
 
 const getQuoteParamsSchema = z.object({
 	chain: z
@@ -35,7 +36,7 @@ export const getQuoteTool = {
 			// const walletService = new WalletService(walletPrivateKey);
 			const walletService = new WalletService(
 				walletPrivateKey,
-				args.chain ? (args.chain as unknown as Chain) : undefined,
+				args.chain ? (args.chain as unknown as Chain) : fraxtal,
 			);
 			const service = new GetQuoteActionService(walletService);
 			const quote = await service.execute(

@@ -4,6 +4,7 @@ import { AssembleService } from "../services/assemble.js";
 import { ExecuteSwapService } from "../services/execute-swap.js";
 import { GetQuoteActionService } from "../services/get-quote.js";
 import { WalletService } from "../services/wallet.js";
+import { mainnet, fraxtal } from "viem/chains";
 
 const swapSchema = z.object({
 	chain: z
@@ -36,7 +37,7 @@ export const swapTool = {
 			// const walletService = new WalletService(walletPrivateKey);
 			const walletService = new WalletService(
 				walletPrivateKey,
-				args.chain ? (args.chain as unknown as Chain) : undefined,
+				args.chain ? (args.chain as unknown as Chain) : fraxtal,
 			);
 			const getQuoteService = new GetQuoteActionService(walletService);
 			const quote = await getQuoteService.execute(
