@@ -69,11 +69,20 @@ export const swapTool = {
 				const hash = await executeSwapService.execute(txn);
 
 				return await executeSwapService.formatWithConfirmation(txn, hash);
-			} catch (error) {
-				return `Error executing swap: ${error instanceof Error ? error.message : String(error)}`;
+			} catch (error: unknown) {
+				const message =
+					error instanceof Error
+						? error.message
+						: "An unknown error occurred during the execution.";
+				throw new Error(`Error executing swap: ${message}`);
 			}
-		} catch (error) {
-			return `Error in swap process: ${error instanceof Error ? error.message : String(error)}`;
+		} catch (error: unknown) {
+			const message =
+				error instanceof Error
+					? error.message
+					: "An unknown error occurred during the fetch.";
+			console.error(`[ODOS_SWAP] Error: ${message}`);
+			throw new Error(`Failed in swap process: ${message}`);
 		}
 	},
 };

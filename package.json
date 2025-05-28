@@ -1,6 +1,6 @@
 {
 	"name": "@iqai/mcp-odos",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "Mcp server for Odos access",
 	"main": "dist/index.js",
 	"type": "module",
