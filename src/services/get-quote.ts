@@ -46,7 +46,8 @@ export class GetQuoteActionService {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({
+				body: JSON.stringify(
+					{
 					chainId,
 					userAddr,
 					inputTokens: [
@@ -65,7 +66,8 @@ export class GetQuoteActionService {
 					referralCode: 0,
 					disableRFQs: true,
 					compact: true,
-				}),
+				}
+			),
 			});
 
 			const data = await response.json();
@@ -76,7 +78,8 @@ export class GetQuoteActionService {
 
 			return data as QuoteResponse;
 		} catch (error) {
-			throw new Error(`Failed to fetch quote: ${(error as Error).message}`);
+			throw new Error(`Fatally Failed to fetch quote: ${(error as Error).message}`);
+			// return `Failed to fetch quote: ${(error as Error).message}`;
 		}
 	}
 

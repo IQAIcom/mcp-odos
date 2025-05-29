@@ -2,7 +2,8 @@ import type { Chain } from "viem";
 import { z } from "zod";
 import { GetQuoteActionService } from "../services/get-quote.js";
 import { WalletService } from "../services/wallet.js";
-import { mainnet, fraxtal } from "viem/chains";
+import { fraxtal } from "viem/chains";
+import { CHAIN_IDS, CHAIN_OBJECTS } from "../lib/constants.js";
 
 const getQuoteParamsSchema = z.object({
 	chain: z
@@ -11,7 +12,6 @@ const getQuoteParamsSchema = z.object({
 		.describe("The blockchain network to execute the transaction on."),
 	fromToken: z.string().describe("The token to swap from."),
 	toToken: z.string().describe("The token to swap to."),
-	chainId: z.number().describe("The chain ID to execute the transaction on."),
 	amount: z
 		.string()
 		.regex(/^\d+(\.\d+)?$/, { message: "Amount must be a valid number." })
@@ -33,16 +33,31 @@ export const getQuoteTool = {
 
 			console.log("[ODOS_GET_QUOTE] Called...");
 
-			// const walletService = new WalletService(walletPrivateKey);
-			const walletService = new WalletService(
-				walletPrivateKey,
-				args.chain ? (args.chain as unknown as Chain) : fraxtal,
+			const inputChain = (args.chain ?? "fraxtal").toLowerCase();
+
+			const chainId = CHAIN_IDS[Object.keys(CHAIN_IDS).find(
+				key => key.toLowerCase() === inputChain
+			) ?? ""];
+			// Get the actual chain object
+			const chainObject = CHAIN_OBJECTS[inputChain];
+
+			if (args.chain && (!chainId || !chainObject)) {
+				throw new Error(`Invalid or unsupported chain: ${inputChain}`);
+			}
+
+			const walletService = new WalletService(walletPrivateKey, chainObject ?? fraxtal);
+
+			console.log(
+				`[ODOS_GET_QUOTE] Using chain: ${chainObject} (${chainId})`,
 			);
+			console.log(walletService.getWalletClient()?.account?.address ?? "No wallet address found");
+
 			const service = new GetQuoteActionService(walletService);
+			
 			const quote = await service.execute(
 				args.fromToken,
 				args.toToken,
-				args.chainId,
+				chainId,
 				args.amount,
 			);
 			if (quote instanceof Error) {
