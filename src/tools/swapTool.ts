@@ -1,10 +1,11 @@
 import type { Chain } from "viem";
+import { fraxtal, mainnet } from "viem/chains";
 import { z } from "zod";
+import { CHAIN_IDS, CHAIN_OBJECTS } from "../lib/constants.js";
 import { AssembleService } from "../services/assemble.js";
 import { ExecuteSwapService } from "../services/execute-swap.js";
 import { GetQuoteActionService } from "../services/get-quote.js";
 import { WalletService } from "../services/wallet.js";
-import { mainnet, fraxtal } from "viem/chains";
 
 const swapSchema = z.object({
 	chain: z
@@ -13,7 +14,6 @@ const swapSchema = z.object({
 		.describe("The blockchain network to execute the transaction on."),
 	fromToken: z.string().describe("The token to swap from."),
 	toToken: z.string().describe("The token to swap to."),
-	chainId: z.number().describe("The chain ID to execute the transaction on."),
 	amount: z
 		.string()
 		.regex(/^\d+(\.\d+)?$/, { message: "Amount must be a valid number." })
@@ -34,16 +34,37 @@ export const swapTool = {
 			}
 
 			console.log("[ODOS_SWAP] Called...");
-			// const walletService = new WalletService(walletPrivateKey);
+			const inputChain = (args.chain ?? "fraxtal").toLowerCase();
+
+			const chainId =
+				CHAIN_IDS[
+					Object.keys(CHAIN_IDS).find(
+						(key) => key.toLowerCase() === inputChain,
+					) ?? ""
+				];
+			// Get the actual chain object
+			const chainObject = CHAIN_OBJECTS[inputChain];
+
+			if (args.chain && (!chainId || !chainObject)) {
+				throw new Error(`Invalid or unsupported chain: ${inputChain}`);
+			}
+
 			const walletService = new WalletService(
 				walletPrivateKey,
-				args.chain ? (args.chain as unknown as Chain) : fraxtal,
+				chainObject ?? fraxtal,
 			);
+
+			console.log(`[ODOS_SWAP] Using chain: ${chainObject} (${chainId})`);
+			console.log(
+				walletService.getWalletClient()?.account?.address ??
+					"No wallet address found",
+			);
+
 			const getQuoteService = new GetQuoteActionService(walletService);
 			const quote = await getQuoteService.execute(
 				args.fromToken,
 				args.toToken,
-				args.chainId,
+				chainId,
 				args.amount,
 			);
 
