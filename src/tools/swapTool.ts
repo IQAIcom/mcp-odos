@@ -1,10 +1,10 @@
 import type { Chain } from "viem";
+import { fraxtal, mainnet } from "viem/chains";
 import { z } from "zod";
 import { AssembleService } from "../services/assemble.js";
 import { ExecuteSwapService } from "../services/execute-swap.js";
 import { GetQuoteActionService } from "../services/get-quote.js";
 import { WalletService } from "../services/wallet.js";
-import { mainnet, fraxtal } from "viem/chains";
 
 const swapSchema = z.object({
 	chain: z
