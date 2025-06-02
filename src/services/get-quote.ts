@@ -73,9 +73,13 @@ export class GetQuoteActionService {
 			if (!response.ok) {
 				interface ErrorResponse {
 					detail: string;
+					traceId: string;
+					errorCode: number;
 				}
 				const errorData = (await response.json()) as ErrorResponse;
-				throw new Error(`Failed to fetch quote: ${errorData.detail}`);
+				throw new Error(
+					`Failed to fetch quote: ${errorData.detail} (Trace ID: ${errorData.traceId}, Error Code: ${errorData.errorCode})`,
+				);
 			}
 
 			return data as QuoteResponse;
