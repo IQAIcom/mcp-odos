@@ -71,13 +71,19 @@ export class GetQuoteActionService {
 			const data = await response.json();
 
 			if (!response.ok) {
-				throw new Error(`Failed to fetch quote: ${response.statusText}`);
+				interface ErrorResponse {
+					detail: string;
+				}
+				const errorData = (await response.json()) as ErrorResponse;
+				throw new Error(`Failed to fetch quote: ${errorData.detail}`);
 			}
 
 			return data as QuoteResponse;
 		} catch (error) {
 			throw new Error(
-				`Fatally Failed to fetch quote: ${(error as Error).message}`,
+				`Fatally Failed to fetch quote: ${(error as Error).message} with code ${
+					(error as { code?: string }).code || "unknown"
+				}`,
 			);
 		}
 	}
