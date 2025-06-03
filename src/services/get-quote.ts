@@ -84,6 +84,9 @@ export class GetQuoteActionService {
       - Price Impact: ${quote.priceImpact ? `${quote.priceImpact?.toFixed(2)}%` : "N/A"}
       - Gas Estimate: ${quote.gasEstimate} (${quote.gasEstimateValue.toFixed(2)} USD)
       - Net Output Value: $${quote.netOutValue.toFixed(2)}
+	  - Deprecated: ${quote.deprecated ? quote.deprecated : "N/A"}
+	  - Partner Fee Percent: ${quote.partnerFeePercent} %
+	  - Path Viz Image: ${quote.pathVizImage ? quote.pathVizImage : "N/A"}
 	  - Path ID: ${quote.pathId ? quote.pathId : "N/A"}
 	  - Block Number: ${quote.blockNumber}
 	  - Percent Diff: ${quote.percentDiff.toFixed(2)}%
