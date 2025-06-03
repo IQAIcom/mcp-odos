@@ -1,6 +1,6 @@
 import dedent from "dedent";
 import { type Address, type Hash, erc20Abi } from "viem";
-import type { AssembleResponseTxn } from "./assemble.js";
+import type { AssembleResponseTxn } from "../types.js";
 import type { WalletService } from "./wallet.js";
 
 export class ExecuteSwapService {

@@ -1,18 +1,8 @@
+import { ODOS_API_URL } from "../constants.js";
+import type { AssembleResponseTxn } from "../types.js";
 import type { WalletService } from "./wallet.js";
 
-export interface AssembleResponseTxn {
-	chainId: number; // Chain ID for path execution
-	gas: string; // Gas limit (2x naive or 1.1x simulated)
-	gasPrice: string; // Gas price for path calculation
-	value: string; // Input gas token amount (0 if not input)
-	to: string; // Odos router address
-	from: string; // Transaction source address
-	data: string; // Router calldata for DEX swaps
-	nonce: number; // Transaction nonce
-}
-
 export class AssembleService {
-	private readonly API_URL = "https://api.odos.xyz";
 	private readonly walletService: WalletService;
 
 	constructor(walletService: WalletService) {
@@ -26,7 +16,7 @@ export class AssembleService {
 			throw new Error("User address is not defined");
 		}
 		try {
-			const response = await fetch(`${this.API_URL}/sor/assemble`, {
+			const response = await fetch(`${ODOS_API_URL}/sor/assemble`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

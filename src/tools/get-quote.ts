@@ -1,21 +1,35 @@
-import type { Chain } from "viem";
 import { fraxtal } from "viem/chains";
+import { isAddress } from "viem/utils";
 import { z } from "zod";
-import { CHAIN_IDS, CHAIN_OBJECTS } from "../lib/constants.js";
 import { GetQuoteActionService } from "../services/get-quote.js";
 import { WalletService } from "../services/wallet.js";
+import { getChainFromName } from "../utils/get-chain.js";
 
 const getQuoteParamsSchema = z.object({
 	chain: z
 		.string()
 		.optional()
-		.describe("The blockchain network to execute the transaction on."),
-	fromToken: z.string().describe("The token to swap from."),
-	toToken: z.string().describe("The token to swap to."),
+		.describe(
+			"The blockchain network to execute the transaction on. uses fraxtal as default",
+		)
+		.default("fraxtal"),
+	fromToken: z
+		.string()
+		.refine(isAddress, { message: "Invalid fromToken address" })
+		.describe("The token to swap from (address)."),
+	toToken: z
+		.string()
+		.refine(isAddress, { message: "Invalid toToken address" })
+		.describe("The token to swap to (address)."),
 	amount: z
 		.string()
-		.regex(/^\d+(\.\d+)?$/, { message: "Amount must be a valid number." })
-		.describe("The amount of tokens to swap."),
+		.regex(/^\d+$/, { message: "Amount must be a string in wei (no decimals)" })
+		.describe("The amount of tokens to swap, in wei."),
+	prettyFormat: z
+		.boolean()
+		.optional()
+		.describe("Whether to pretty format the quote.")
+		.default(true),
 });
 
 export const getQuoteTool = {
@@ -31,29 +45,18 @@ export const getQuoteTool = {
 				);
 			}
 
-			console.log("[ODOS_GET_QUOTE] Called...");
+			const inputChain = args.chain.toLowerCase();
 
-			const inputChain = (args.chain ?? "fraxtal").toLowerCase();
-
-			const chainId =
-				CHAIN_IDS[
-					Object.keys(CHAIN_IDS).find(
-						(key) => key.toLowerCase() === inputChain,
-					) ?? ""
-				];
-			// Get the actual chain object
-			const chainObject = CHAIN_OBJECTS[inputChain];
-
-			if (args.chain && (!chainId || !chainObject)) {
-				throw new Error(`Invalid or unsupported chain: ${inputChain}`);
-			}
+			const chainObject = getChainFromName(inputChain);
 
 			const walletService = new WalletService(
 				walletPrivateKey,
 				chainObject ?? fraxtal,
 			);
 
-			console.log(`[ODOS_GET_QUOTE] Using chain: ${chainObject} (${chainId})`);
+			console.log(
+				`[ODOS_GET_QUOTE] Using chain: ${chainObject} (${chainObject.id})`,
+			);
 			console.log(
 				walletService.getWalletClient()?.account?.address ??
 					"No wallet address found",
@@ -64,14 +67,16 @@ export const getQuoteTool = {
 			const quote = await service.execute(
 				args.fromToken,
 				args.toToken,
-				chainId,
+				chainObject.id,
 				args.amount,
 			);
 			if (quote instanceof Error) {
 				return `Error fetching quote: ${quote.message}`;
 			}
 
-			return service.format(quote);
+			return args.prettyFormat
+				? service.format(quote)
+				: JSON.stringify(quote, null, 2);
 		} catch (error: unknown) {
 			const message =
 				error instanceof Error
