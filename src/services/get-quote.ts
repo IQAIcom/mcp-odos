@@ -1,30 +1,10 @@
 import dedent from "dedent";
 import { formatUnits } from "viem";
+import { ODOS_API_URL } from "../constants.js";
+import type { QuoteResponse } from "../types.js";
 import type { WalletService } from "./wallet.js";
 
-export interface QuoteResponse {
-	inTokens: string[];
-	outTokens: string[];
-	inAmounts: string[];
-	outAmounts: string[];
-	gasEstimate: number;
-	dataGasEstimate: number;
-	gweiPerGas: number;
-	gasEstimateValue: number;
-	inValues: number[];
-	outValues: number[];
-	netOutValue: number;
-	priceImpact: number | null;
-	percentDiff: number;
-	pathId: string | null;
-	blockNumber: number;
-	deprecated: string | null;
-	partnerFeePercent: number;
-	pathVizImage: string | null;
-}
-
 export class GetQuoteActionService {
-	private readonly API_URL = "https://api.odos.xyz";
 	private readonly walletService: WalletService;
 
 	constructor(walletService: WalletService) {
@@ -44,7 +24,7 @@ export class GetQuoteActionService {
 		}
 
 		try {
-			const response = await fetch(`${this.API_URL}/sor/quote/v2`, {
+			const response = await fetch(`${ODOS_API_URL}/sor/quote/v2`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -104,9 +84,6 @@ export class GetQuoteActionService {
       - Price Impact: ${quote.priceImpact ? `${quote.priceImpact?.toFixed(2)}%` : "N/A"}
       - Gas Estimate: ${quote.gasEstimate} (${quote.gasEstimateValue.toFixed(2)} USD)
       - Net Output Value: $${quote.netOutValue.toFixed(2)}
-	  - Deprecated: ${quote.deprecated ? quote.deprecated : "N/A"}
-	  - Partner Fee Percent: ${quote.partnerFeePercent} %
-	  - Path Viz Image: ${quote.pathVizImage ? quote.pathVizImage : "N/A"}
 	  - Path ID: ${quote.pathId ? quote.pathId : "N/A"}
 	  - Block Number: ${quote.blockNumber}
 	  - Percent Diff: ${quote.percentDiff.toFixed(2)}%
