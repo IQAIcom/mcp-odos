@@ -2,7 +2,7 @@ import type { Chain } from "viem";
 import * as chains from "viem/chains";
 
 export function getChainFromName(name: string): Chain {
-	switch (name) {
+	switch (name.toLowerCase()) {
 		case "fraxtal":
 			return chains.fraxtal;
 		case "mainnet":
@@ -29,7 +29,7 @@ export function getChainFromName(name: string): Chain {
 			return chains.sonic;
 		case "fantom":
 			return chains.fantom;
-		case "zkSync Era":
+		case "zksync era":
 			return chains.zksync;
 		case "mantle":
 			return chains.mantle;
@@ -37,11 +37,11 @@ export function getChainFromName(name: string): Chain {
 			return chains.sepolia;
 		case "goerli":
 			return chains.goerli;
-		case "polygonMumbai":
+		case "polygon mumbai":
 			return chains.polygonMumbai;
-		case "arbitrumGoerli":
+		case "arbitrum goerli":
 			return chains.arbitrumGoerli;
-		case "bscTestnet":
+		case "bsc testnet":
 			return chains.bscTestnet;
 		case "eth":
 			return chains.mainnet;

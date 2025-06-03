@@ -52,10 +52,6 @@ export const swapTool = {
 
 			const chainObject = getChainFromName(inputChain);
 
-			if (args.chain && !chainObject) {
-				throw new Error(`Invalid or unsupported chain: ${inputChain}`);
-			}
-
 			const walletService = new WalletService(
 				walletPrivateKey,
 				chainObject ?? fraxtal,
