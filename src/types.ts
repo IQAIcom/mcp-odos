@@ -35,3 +35,9 @@ export interface AssembleResponseTxn {
 	data: string; // Router calldata for DEX swaps
 	nonce: number; // Transaction nonce
 }
+
+export interface ErrorResponse {
+	detail: string;
+	traceId: string;
+	errorCode: number;
+}

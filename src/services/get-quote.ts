@@ -2,6 +2,7 @@ import dedent from "dedent";
 import { formatUnits } from "viem";
 import { ODOS_API_URL } from "../constants.js";
 import type { QuoteResponse } from "../types.js";
+import type { ErrorResponse } from "../types.js";
 import type { WalletService } from "./wallet.js";
 
 export class GetQuoteActionService {
@@ -54,11 +55,6 @@ export class GetQuoteActionService {
 			const data = await response.json();
 
 			if (!response.ok) {
-				interface ErrorResponse {
-					detail: string;
-					traceId: string;
-					errorCode: number;
-				}
 				const errorData = data as ErrorResponse;
 				throw new Error(
 					`Failed to fetch quote: ${errorData.detail} (Trace ID: ${errorData.traceId}, Error Code: ${errorData.errorCode})`,
