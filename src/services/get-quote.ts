@@ -18,6 +18,9 @@ export interface QuoteResponse {
 	percentDiff: number;
 	pathId: string | null;
 	blockNumber: number;
+	deprecated: string | null;
+	partnerFeePercent: number;
+	pathVizImage: string | null;
 }
 
 export class GetQuoteActionService {
@@ -76,7 +79,7 @@ export class GetQuoteActionService {
 					traceId: string;
 					errorCode: number;
 				}
-				const errorData = (await response.json()) as ErrorResponse;
+				const errorData = data as ErrorResponse;
 				throw new Error(
 					`Failed to fetch quote: ${errorData.detail} (Trace ID: ${errorData.traceId}, Error Code: ${errorData.errorCode})`,
 				);
@@ -84,6 +87,7 @@ export class GetQuoteActionService {
 
 			return data as QuoteResponse;
 		} catch (error) {
+			console.error("Error fetching quote:", error);
 			throw new Error(
 				`Fatally Failed to fetch quote: ${(error as Error).message} with code ${
 					(error as { code?: string }).code || "unknown"
@@ -97,9 +101,20 @@ export class GetQuoteActionService {
       💱 Quote Details
       - Input: ${formatUnits(BigInt(quote.inAmounts[0]), 18)} ${quote.inTokens[0]}
       - Output: ${formatUnits(BigInt(quote.outAmounts[0]), 18)} ${quote.outTokens[0]}
-      - Price Impact: ${quote.priceImpact ? `${quote.priceImpact.toFixed(2)}%` : "N/A"}
+      - Price Impact: ${quote.priceImpact ? `${quote.priceImpact?.toFixed(2)}%` : "N/A"}
       - Gas Estimate: ${quote.gasEstimate} (${quote.gasEstimateValue.toFixed(2)} USD)
       - Net Output Value: $${quote.netOutValue.toFixed(2)}
+	  - Deprecated: ${quote.deprecated ? quote.deprecated : "N/A"}
+	  - Partner Fee Percent: ${quote.partnerFeePercent} %
+	  - Path Viz Image: ${quote.pathVizImage ? quote.pathVizImage : "N/A"}
+	  - Path ID: ${quote.pathId ? quote.pathId : "N/A"}
+	  - Block Number: ${quote.blockNumber}
+	  - Percent Diff: ${quote.percentDiff.toFixed(2)}%
+	  - Data Gas Estimate: ${quote.dataGasEstimate} units
+	  - Gwei Per Gas: ${quote.gweiPerGas} gwei
+	  - In Values: ${quote.inValues.map((v) => v.toFixed(2)).join(", ")}
+	  - Out Values: ${quote.outValues.map((v) => v.toFixed(2)).join(", ")}
+	  - other data: ${JSON.stringify(quote, null, 2)}
     `;
 		return formattedQuote;
 	}
