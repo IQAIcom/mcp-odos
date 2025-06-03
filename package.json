@@ -1,15 +1,13 @@
 {
 	"name": "@iqai/mcp-odos",
-	"version": "0.1.1",
+	"version": "0.1.0",
 	"description": "Mcp server for Odos access",
 	"main": "dist/index.js",
 	"type": "module",
 	"bin": {
 		"mcp-odos": "dist/index.js"
 	},
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"scripts": {
 		"build": "tsc && shx chmod +x dist/index.js",
 		"prepare": "husky",
@@ -37,11 +35,7 @@
 		"type": "git",
 		"url": "git+https://github.com/IQAIcom/mcp-odos.git"
 	},
-	"keywords": [
-		"mcp",
-		"Odos",
-		"iqagents"
-	],
+	"keywords": ["mcp", "Odos", "iqagents"],
 	"author": "IQAI",
 	"license": "ISC",
 	"bugs": {
