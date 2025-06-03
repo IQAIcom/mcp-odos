@@ -1,11 +1,11 @@
 import { fraxtal } from "viem/chains";
+import { isAddress } from "viem/utils";
 import { z } from "zod";
 import { AssembleService } from "../services/assemble.js";
 import { ExecuteSwapService } from "../services/execute-swap.js";
 import { GetQuoteActionService } from "../services/get-quote.js";
 import { WalletService } from "../services/wallet.js";
 import { getChainFromName } from "../utils/get-chain.js";
-import { isAddress } from "viem/utils";
 
 const swapParamsSchema = z.object({
 	chain: z

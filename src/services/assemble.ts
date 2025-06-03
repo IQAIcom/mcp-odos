@@ -1,6 +1,6 @@
+import { ODOS_API_URL } from "../constants.js";
 import type { AssembleResponseTxn } from "../types.js";
 import type { WalletService } from "./wallet.js";
-import { ODOS_API_URL } from "../constants.js";
 
 export class AssembleService {
 	private readonly walletService: WalletService;

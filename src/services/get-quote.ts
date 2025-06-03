@@ -1,8 +1,8 @@
 import dedent from "dedent";
 import { formatUnits } from "viem";
-import type { WalletService } from "./wallet.js";
-import type { QuoteResponse } from "../types.js";
 import { ODOS_API_URL } from "../constants.js";
+import type { QuoteResponse } from "../types.js";
+import type { WalletService } from "./wallet.js";
 
 export class GetQuoteActionService {
 	private readonly walletService: WalletService;

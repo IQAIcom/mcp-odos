@@ -1,7 +1,7 @@
 import dedent from "dedent";
 import { type Address, type Hash, erc20Abi } from "viem";
-import type { WalletService } from "./wallet.js";
 import type { AssembleResponseTxn } from "../types.js";
+import type { WalletService } from "./wallet.js";
 
 export class ExecuteSwapService {
 	private readonly NATIVE_TOKEN = "0x0000000000000000000000000000000000000000";
