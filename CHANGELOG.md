@@ -1,5 +1,11 @@
 # @iqai/mcp-odos
 
+## 0.1.1
+
+### Patch Changes
+
+- dafb15b: better data and error response
+
 ## 0.1.0
 
 ### Minor Changes
