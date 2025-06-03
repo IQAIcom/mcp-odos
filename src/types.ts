@@ -20,6 +20,9 @@ export interface QuoteResponse {
 	percentDiff: number;
 	pathId: string | null;
 	blockNumber: number;
+	deprecated: string | null;
+	partnerFeePercent: number;
+	pathVizImage: string | null;
 }
 
 export interface AssembleResponseTxn {
