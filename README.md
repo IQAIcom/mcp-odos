@@ -8,13 +8,60 @@ This project implements a Model Context Protocol (MCP) server to interact with d
 
 This server is built using TypeScript and `fastmcp`.
 
+## Error Handling
+
+The server provides detailed error messages to help diagnose issues. Errors typically include a `detail` message, a `traceId` for debugging, and an `errorCode`.
+
+Example Error Response:
+
+```json
+{
+  "detail": "Failed to fetch quote: invalid fromToken address",
+  "traceId": "...",
+  "errorCode": "INVALID_ADDRESS"
+}
+```
+
 ## Features (MCP Tools)
 
 The server exposes the following tools that MCP clients can utilize:
 
 - **`ODOS_GET_QUOTE`**: Fetch a quote for a swap.
-  - Parameters: `chainId` (number), `sellToken` (string), `buyToken` (string), `sellAmount` (string)
-- **`ODOS_EXECUTE_SWAP`**: Execute a swap.
+
+  - Parameters: `chainId` (number), `fromToken` (string), `toToken` (string), `amount` (string)
+
+  Example Response:
+
+  ```json
+  {
+    "inTokens": ["0x..."],
+    "outTokens": ["0x..."],
+    "inAmounts": ["1000000000000000000"],
+    "outAmounts": ["990000000000000000"],
+    "pathId": "0x...",
+    "gasEstimate": 200000,
+    "gasEstimateValue": 0.1,
+    "netOutValue": 100,
+    "priceImpact": 0.01
+  }
+  ```
+
+  Example Response:
+
+  ```json
+  {
+    "hash": "0x...",
+    "txn": {
+      "to": "0x...",
+      "data": "0x...",
+      "value": "0",
+      "gas": "200000",
+      "gasPrice": "10000000000"
+    }
+  }
+  ```
+
+- **`ODOS_SWAP`**: Execute a swap transaction.
 
   - Parameters: `chainId` (number), `sellToken` (string), `buyToken` (string), `sellAmount` (string), `quote` (string), `walletProvider` (string)
 
