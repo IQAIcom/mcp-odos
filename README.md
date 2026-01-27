@@ -1,96 +1,94 @@
-# MCP-ODOS: Model Context Protocol Server for Decentralized Exchanges
+# 🔄 ODOS MCP Server
 
-This project implements a Model Context Protocol (MCP) server to interact with decentralized exchanges (DEXs). It allows MCP-compatible clients (like AI assistants, IDE extensions, or custom applications) to access functionalities such as getting quotes for swaps and executing swaps.
+[![npm version](https://img.shields.io/npm/v/@iqai/mcp-odos.svg)](https://www.npmjs.com/package/@iqai/mcp-odos)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+## 📖 Overview
+
+The ODOS MCP Server enables AI agents to interact with [Odos](https://www.odos.xyz), a decentralized exchange aggregator that finds the most efficient swap routes across multiple DEXs. This server provides access to swap quotes and execution capabilities for optimal token swaps.
+
+By implementing the Model Context Protocol (MCP), this server allows Large Language Models (LLMs) to get swap quotes, execute token swaps, and interact with the Odos API directly through their context window, bridging the gap between AI and decentralized exchange aggregation.
 
 <a href="https://glama.ai/mcp/servers/@IQAIcom/mcp-odos">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/@IQAIcom/mcp-odos/badge" alt="MCP-ODOS MCP server" />
 </a>
 
-This server is built using TypeScript and `fastmcp`.
+## ✨ Features
 
-## Features (MCP Tools)
+*   **Optimal Routing**: Get the most efficient swap routes across multiple DEXs through Odos aggregation.
+*   **Quote Retrieval**: Fetch detailed swap quotes including expected output amounts and price impact.
+*   **Swap Execution**: Execute swaps directly from quotes with wallet integration.
+*   **Multi-Chain Support**: Support for various EVM-compatible chains through chain ID configuration.
 
-The server exposes the following tools that MCP clients can utilize:
+## 📦 Installation
 
-- **`ODOS_GET_QUOTE`**: Fetch a quote for a swap.
-  - Parameters: `chainId` (number), `sellToken` (string), `buyToken` (string), `sellAmount` (string)
-- **`ODOS_EXECUTE_SWAP`**: Execute a swap.
+### 🚀 Using npx (Recommended)
 
-  - Parameters: `chainId` (number), `sellToken` (string), `buyToken` (string), `sellAmount` (string), `quote` (string), `walletProvider` (string)
-
-### Parameter breakdown
-
-- `chainId`: The chain ID of the DEX.
-- `sellToken`: The token you want to sell.
-- `buyToken`: The token you want to buy.
-- `sellAmount`: The amount of tokens you want to sell.
-- `quote`: The quote you got from the `get-quote` service.
-- `walletProvider`: The wallet provider you want to use.
-
-## Prerequisites
-
-- Node.js (v18 or newer recommended)
-- pnpm (See <https://pnpm.io/installation>)
-
-## Installation
-
-There are a few ways to use `mcp-odos`:
-
-**1. Using `pnpm dlx` (Recommended for most MCP client setups):**
-
-You can run the server directly using `pnpm dlx` without needing a global installation. This is often the easiest way to integrate with MCP clients. See the "Running the Server with an MCP Client" section for examples.
-(`pnpm dlx` is pnpm's equivalent of `npx`)
-
-**2. Global Installation from npm (via pnpm):**
-
-Install the package globally to make the `mcp-odos` command available system-wide:
+To use this server without installing it globally:
 
 ```bash
-pnpm add -g mcp-odos
+npx @iqai/mcp-odos
 ```
 
-**3. Building from Source (for development or custom modifications):**
+### 📦 Using pnpm dlx
 
-1.  **Clone the repository:**
+```bash
+pnpm dlx @iqai/mcp-odos
+```
 
-    ```bash
-    git clone https://github.com/IQAIcom/mcp-odos.git
-    cd mcp-odos
-    ```
+### 🔧 Build from Source
 
-2.  **Install dependencies:**
+```bash
+git clone https://github.com/IQAIcom/mcp-odos.git
+cd mcp-odos
+pnpm install
+pnpm run build
+```
 
-    ```bash
-    pnpm install
-    ```
+## ⚡ Running with an MCP Client
 
-3.  **Build the server:**
-    This compiles the TypeScript code to JavaScript in the `dist` directory.
+Add the following configuration to your MCP client settings (e.g., `claude_desktop_config.json`).
 
-    ```bash
-    pnpm run build
-    ```
-
-    The `prepare` script also runs `pnpm run build`, so dependencies are built upon installation if you clone and run `pnpm install`.
-
-## Configuration (Environment Variables)
-
-This MCP server may require certain environment variables to be set by the MCP client that runs it. These are typically configured in the client's MCP server definition (e.g., in a `mcp.json` file for Cursor, or similar for other clients).
-
-- Any necessary environment variables for wallet providers or API keys.
-
-## Running the Server with an MCP Client
-
-MCP clients (like AI assistants, IDE extensions, etc.) will run this server as a background process. You need to configure the client to tell it how to start your server.
-
-Below is an example configuration snippet that an MCP client might use (e.g., in a `mcp_servers.json` or similar configuration file). This example shows how to run the server using the published npm package via `pnpm dlx`.
+### 📋 Minimal Configuration
 
 ```json
 {
   "mcpServers": {
-    "iq-odos-mcp-server": {
+    "odos": {
+      "command": "npx",
+      "args": ["-y", "@iqai/mcp-odos"],
+      "env": {
+        "WALLET_PRIVATE_KEY": "your_wallet_private_key_here"
+      }
+    }
+  }
+}
+```
+
+### ⚙️ Advanced Configuration (Local Build)
+
+```json
+{
+  "mcpServers": {
+    "odos": {
+      "command": "node",
+      "args": ["/absolute/path/to/mcp-odos/dist/index.js"],
+      "env": {
+        "WALLET_PRIVATE_KEY": "your_wallet_private_key_here"
+      }
+    }
+  }
+}
+```
+
+### 🔄 Alternative: Using pnpm dlx
+
+```json
+{
+  "mcpServers": {
+    "odos": {
       "command": "pnpm",
-      "args": ["dlx", "mcp-odos"],
+      "args": ["dlx", "@iqai/mcp-odos"],
       "env": {
         "WALLET_PRIVATE_KEY": "your_wallet_private_key_here"
       }
@@ -99,29 +97,99 @@ Below is an example configuration snippet that an MCP client might use (e.g., in
 }
 ```
 
-**Alternative if Globally Installed:**
+## 🔐 Configuration (Environment Variables)
 
-If you have installed `mcp-odos` globally (`pnpm add -g mcp-odos`), you can simplify the `command` and `args`:
+| Variable | Required | Description | Default |
+| :--- | :--- | :--- | :--- |
+| `WALLET_PRIVATE_KEY` | Yes | Private key for the wallet executing swaps | - |
 
-```json
-{
-  "mcpServers": {
-    "iq-odos-mcp-server": {
-      "command": "mcp-odos",
-      "args": [],
-      "env": {
-        "WALLET_PRIVATE_KEY": "your_wallet_private_key_here"
-      }
-    }
-  }
-}
+### 🔒 Security Notes
+
+*   **Keep your `WALLET_PRIVATE_KEY` private** - Never share or commit your private key.
+*   Only use wallets with funds you're willing to risk when interacting with DeFi protocols.
+*   Consider using a dedicated wallet for MCP interactions.
+
+## 💡 Usage Examples
+
+### 📊 Getting Quotes
+*   "Get a quote to swap 1 ETH for USDC on Ethereum mainnet."
+*   "What's the best rate to swap 1000 USDC to DAI?"
+*   "Show me a quote for swapping 0.5 ETH to WBTC on chain 1."
+
+### 🔄 Executing Swaps
+*   "Execute the swap from the quote I just received."
+*   "Swap 100 USDC to ETH using the Odos aggregator."
+
+### 🔍 Chain Information
+*   "What chain ID am I connected to?"
+*   "Get the current chain ID."
+
+## 🛠️ MCP Tools
+
+<!-- AUTO-GENERATED TOOLS START -->
+
+### `ODOS_GET_QUOTE`
+Fetch a quote for a token swap from Odos API.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `chainId` | number | ✅ | The chain ID of the network |
+| `sellToken` | string | ✅ | The token address to sell |
+| `buyToken` | string | ✅ | The token address to buy |
+| `sellAmount` | string | ✅ | The amount of tokens to sell (in base units) |
+
+### `ODOS_SWAP`
+Execute a swap using an Odos quote.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `chainId` | number | ✅ | The chain ID of the network |
+| `sellToken` | string | ✅ | The token address to sell |
+| `buyToken` | string | ✅ | The token address to buy |
+| `sellAmount` | string | ✅ | The amount of tokens to sell (in base units) |
+| `quote` | string | ✅ | The quote received from ODOS_GET_QUOTE |
+| `walletProvider` | string | ✅ | The wallet provider identifier |
+
+### `ODOS_GET_CHAIN_ID`
+Get the current chain ID.
+
+_No parameters_
+
+<!-- AUTO-GENERATED TOOLS END -->
+
+## 👨‍💻 Development
+
+### 🏗️ Build Project
+```bash
+pnpm run build
 ```
 
-- **`command`**: The executable to run.
-  - For `pnpm dlx`: `"pnpm"` (with `"dlx"` as the first arg)
-  - For global install: `"mcp-odos"`
-- **`args`**: An array of arguments to pass to the command.
-  - For `pnpm dlx`: `["dlx", "mcp-odos"]`
-  - For global install: `[]`
-- **`env`**: An object containing environment variables to be set when the server process starts. This is where you provide any necessary environment variables.
-- **`workingDirectory`**: Generally not required when using the published package via `pnpm dlx` or a global install, as the package should handle its own paths correctly. If you were running from source (`node dist/index.js`), then setting `workingDirectory` to the project root would be important.
+### 👁️ Development Mode (Watch)
+```bash
+pnpm run watch
+```
+
+### ✅ Linting & Formatting
+```bash
+pnpm run lint
+pnpm run format
+```
+
+### 📁 Project Structure
+*   `src/tools/`: Individual tool definitions
+*   `src/lib/`: Shared utilities, constants, and configuration
+*   `src/index.ts`: Server entry point
+
+## 📚 Resources
+
+*   [Odos Protocol](https://www.odos.xyz)
+*   [Odos API Documentation](https://docs.odos.xyz)
+*   [Model Context Protocol (MCP)](https://modelcontextprotocol.io)
+
+## ⚠️ Disclaimer
+
+This project interacts with decentralized exchanges and DeFi protocols. Trading in cryptocurrencies involves significant risk including price slippage, impermanent loss, and potential loss of funds. Users should verify all swap parameters and understand the risks before executing trades. The authors are not responsible for any financial losses incurred through the use of this software.
+
+## 📄 License
+
+[MIT](LICENSE)
