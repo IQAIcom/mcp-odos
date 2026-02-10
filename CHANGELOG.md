@@ -1,5 +1,11 @@
 # @iqai/mcp-odos
 
+## 0.1.2
+
+### Patch Changes
+
+- 20f1ca2: added shebang and upgraded fastmcp dependency to v3.32.0 for improved features and bug fixes.
+
 ## 0.1.1
 
 ### Patch Changes
