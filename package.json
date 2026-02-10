@@ -45,7 +45,7 @@
 	"dependencies": {
 		"dedent": "^1.6.0",
 		"express": "^5.1.0",
-		"fastmcp": "^1.27.7",
+		"fastmcp": "^3.32.0",
 		"shx": "^0.3.4",
 		"viem": "^2.30.0",
 		"zod": "^3.25.7"

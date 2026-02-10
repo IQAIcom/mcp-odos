@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { FastMCP } from "fastmcp";
 import { chainIdTool } from "./tools/chain-id.js";
 import { getQuoteTool } from "./tools/get-quote.js";
